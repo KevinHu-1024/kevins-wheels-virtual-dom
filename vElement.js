@@ -13,7 +13,13 @@ class vElement {
       }
     }
     if (this.children.length) {
-      this.children.forEach(child => el.appendChild(child.render()))
+      this.children.forEach(child => {
+        if (child instanceof vElement) {
+          el.appendChild(child.render());
+        } else {
+          el.appendChild(document.createTextNode(child));
+        }
+      })
     }
     return el;
   }

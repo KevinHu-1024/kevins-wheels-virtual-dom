@@ -3,7 +3,7 @@ import createElement from './vElement';
 
 var list = (
   <ul id="list">
-    <li class="item"></li>
+    <li class="item">this is text</li>
     <li class="item"></li>
     <li class="item"></li>
     <li class="item"></li>
