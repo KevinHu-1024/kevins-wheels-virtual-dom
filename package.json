@@ -26,7 +26,5 @@
     "babel-preset-env": "^1.5.2",
     "webpack": "^2.6.1"
   },
-  "dependencies": {
-    "babel": "^6.23.0"
-  }
+  "dependencies": {}
 }
