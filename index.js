@@ -19,7 +19,7 @@ var list = (
 
 var list2 = (
   <ul id="list2">
-    <li class="item">this is text</li>
+    <li class="item">this is a text</li>
     <li class="item">
       <p>this is a p</p>
     </li>
@@ -27,6 +27,7 @@ var list2 = (
     <li class="item">
       <input type="text" value="other text" />
     </li>
+    <li>last</li>
   </ul>
 );
 
