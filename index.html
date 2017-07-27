@@ -5,10 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>实现VirtualDOM</title>
+  <style>
+    .diff, #container {
+      display: table;
+    }
+    #diff1, #diff2, #app, #app2 {
+      display: table-cell;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    VirtualDOM Diff
+  <div id="container">
+    <div id="app">
+      VirtualDOM Diff 原始
+    </div>
+    <div id="app2">
+      VirtualDOM Diff 新的
+    </div>
+  </div>
+  <div class="diff">
+    <pre id="diff1"></pre>
+    <pre id="diff2"></pre>
   </div>
 </body>
 <script src="./build/app.js"></script>

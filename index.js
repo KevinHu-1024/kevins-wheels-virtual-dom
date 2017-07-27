@@ -31,7 +31,11 @@ var list2 = (
   </ul>
 );
 
-console.log(list, list2);
-diff(list, list2);
+document.querySelector('#diff1').innerText = json(list)
+document.querySelector('#diff2').innerText = json(list2)
+function json(j) {
+  return JSON.stringify(j, null, 2);
+}
+console.log(diff(list, list2));
 
-document.querySelector('#app').appendChild(list.render());
+document.querySelector('#app').appendChild(list.render());document.querySelector('#app2').appendChild(list2.render());
