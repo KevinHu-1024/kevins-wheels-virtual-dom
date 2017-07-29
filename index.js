@@ -4,14 +4,14 @@ import diff from './diff';
 
 var list = (
   <ul id="list">
-    <li class="item">this is text</li>
-    <li class="item">
-      <span style="font-size:26px">bigger <a href="#">link</a> text</span>
+    <li class="item" key="key1">this is text key1</li>
+    <li class="item" key="key4">
+      <span style="font-size:26px">bigger <a href="#">link</a> text key4</span>
     </li>
-    <li class="item">
-      <input type="text" value="input text" />
+    <li class="item" key="key2">
+      <input type="text" value="input text key2" />
     </li>
-    <li class="item"></li>
+    <li class="item" key="key3">key3</li>
   </ul>
 );
 
@@ -19,13 +19,13 @@ var list = (
 
 var list2 = (
   <ul id="list2">
-    <li class="item">this is a text</li>
+    <li class="item" key="key1">this is a text key1</li>
     <li class="item">
       <p>this is a p</p>
     </li>
-    <li class="item"></li>
-    <li class="item">
-      <input type="text" value="other text" />
+    <li class="item" key="key3"> key3  </li>
+    <li class="item" key="key2">
+      <input type="text" value="other text key2" />
     </li>
     <li>last</li>
   </ul>

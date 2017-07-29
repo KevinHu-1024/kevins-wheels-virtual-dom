@@ -1,9 +1,9 @@
 // import listDiff from './list-diff'
 
-const REPLACE = 0
-const ATTRS   = 1
-const TEXT    = 2
-const REORDER = 3
+const REPLACE = 'REPLACE'
+const ATTRS   = 'ATTRS'
+const TEXT    = 'TEXT'
+const REORDER = 'REORDER'
 
 // diff 入口，比较新旧两棵树的差异
 function diff (oldTree, newTree) {
@@ -89,7 +89,8 @@ function diffAttrs (oldNode, newNode) {
 let key_id = 0
 // diff with children
 function diffChildren (oldChildren, newChildren, index, patches, currentPatch) {
-  // let diffs = listDiff(oldChildren, newChildren, 'key')
+  let diffs = listDiff(oldChildren, newChildren, 'key')
+  console.log(JSON.stringify(diffs, null ,2));
   // newChildren = diffs.children
 
   // if (diffs.moves.length) {
@@ -118,28 +119,94 @@ function diffChildren (oldChildren, newChildren, index, patches, currentPatch) {
  *                  - moves list操作记录的集合
  */
 function listDiff(oldList, newList, key) {
+  const oldMap = objectify(oldList, key)
+  const newMap = objectify(newList, key)
+  const record = []
 
-}
-oldMap = {
-  keyIndex: {
-    keycat: 0,
-    keydog: 1,
-    keybee: 3
-  },
-  free: [
-    { some: 1 }
-  ]
+  // 最后再处理删除的情况，否则后面的索引就对不上了
+  // 这也意味着oldToNew的数组和map都不能用了
+  // 其实也无所谓，因为在后面删除同样是索引对不上
+  // 这要求在list diff之后，马上就要把需要replace掉的元素删除，来避免对索引产生影响
+  // const oldToNew = [];
+  // for (let key in oldMap) {
+  //   const newHasItem = key => !!newMap[key]
+  //   if (!newHasItem(key)) {
+  //     record.push({ type: REPLACE, index: oldMap[key].index })
+  //   } else {
+  //     oldToNew.push(oldMap[key])
+  //   }
+  // }
+
+  // const oldToNewMap = {}
+  // oldToNew.forEach(item => oldToNewMap[getKey(item.item, key)] = item)
+  // console.log('oldtonewmap', JSON.stringify(oldToNewMap, null, 2))
+
+  newList.forEach((item, i) => {
+    const curKey = getKey(item, key)
+    const oldHas = key => !!oldMap[key]
+
+    if (oldHas(curKey)) {
+      // 顺序
+      if (i > oldMap[curKey].index) {
+        // 新位置比原来的位置大
+        record.push({ type: REORDER, index: oldMap[curKey].index, to: i })
+      }
+    } else {
+      // 新增元素
+      record.push({ type: ATTRS, index: i })
+    }
+  })
+
+  for (let key in oldMap) {
+    const newHasItem = key => !!newMap[key]
+    if (!newHasItem(key)) {
+      record.push({ type: REPLACE, index: oldMap[key].index })
+    }
+  }
+
+// list diff 结果
+// [
+//    原来的1位，进行下一步处理（最后是insetAfter）
+//   {
+//     "type": "ATTRS",
+//     "index": 1
+//   },
+//   原来的2位移动到3位
+//   {
+//     "type": "REORDER",
+//     "index": 2,
+//     "to": 3
+//   },
+//   原来的4位，进行下一步处理
+//   {
+//     "type": "ATTRS",
+//     "index": 4
+//   },
+//   原来的1位，删除
+//   {
+//     "type": "REPLACE",
+//     "index": 1
+//   }
+// ]
+
+  function objectify(list, key) {
+    const res = {}
+    list.forEach((item, i) => {
+      if (getKey(item, key)) {
+        res[getKey(item, key)] = {
+          item,
+          index: i,
+        }
+      }
+    })
+    return res;
+  }
+
+  function getKey(item, key) {
+    return item && item.attrs && item.attrs[key] || ''
+  }
+
+  return record;
 }
 
-// 循环新的
-//   similate中有（老的里面有）
-//     在新的里面位置没变
-//       跳过，下一个simulate元素
-//     在新的中位置不在这里
-//       老的里面没有这个新的，是一个新元素
-//         插入
-//       要么移动了，要么新的中没有
-      
-//   simulate中没有（老的里面没有，肯定是新的元素）
-//     插入
 module.exports = diff
